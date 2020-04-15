@@ -19,6 +19,43 @@ from client.models import (
 
 )
 
+def image_tag(self):
+    from django.utils.html import escape
+    return u'<img src="%s" />'
+image_tag.short_description = 'Image'
+image_tag.allow_tags = True
+
+
+class ClientAdmin(admin.TabularInline):
+    model = Client
+
+class ImageAdmin(admin.ModelAdmin):
+    model = Image
+    fields = ('image_tag', 'path')
+    readonly_fields = ('image_tag',)
+
+class OrderStatusAdmin(admin.TabularInline):
+    model = OrderStatus
+    extra = 0
+
+class ImageGroupAdmin(admin.TabularInline):
+    model = ImageGroup
+    fields = ['images','size','order']
+    readonly_fields = ['images','size','order']
+
+    def images(self, instance):
+        return instance.images
+    images.short_description = 'image'
+
+class OrderAdmin(admin.ModelAdmin):
+
+    inlines = [ ImageGroupAdmin]
+
+
+class ImageGroupAdmin(admin.ModelAdmin):
+
+    inlines = [ ImageAdmin]
+
 class MyEmsAdminSite(AdminSite):
 
     site_title = 'Annaniks LLC'
@@ -61,7 +98,8 @@ myems_admin_site.register(Client)
 myems_admin_site.register(Size)
 myems_admin_site.register(City)
 myems_admin_site.register(Addresses)
-myems_admin_site.register(Image)
-myems_admin_site.register(Order)
+myems_admin_site.register(Image,ImageAdmin)
+myems_admin_site.register(Order,OrderAdmin)
 myems_admin_site.register(OrderStatus)
 myems_admin_site.register(ImageGroup)
+

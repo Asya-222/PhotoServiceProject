@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import  os
+from django.utils.safestring import mark_safe
+from django.conf import settings
 
 # Create your models here.
 class Client(models.Model):
@@ -43,21 +45,34 @@ class Image(models.Model):
     path = models.ImageField()
 
     def __str__(self):
-        return str(self.id)
+        return self.path.url
 
-class Order(models.Model):
-    id = models.AutoField(primary_key=True)
-    address = models.CharField(max_length=1000)
 
-    def __str__(self):
-        return self.address
+    def url(self):
+        # returns a URL for either internal stored or external image url
 
+            # is this the best way to do this??
+            return os.path.join('/', settings.MEDIA_URL, os.path.basename(str(self.path)))
+
+    def image_tag(self):
+        # used in the admin site model as a "thumbnail"
+        return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
 class OrderStatus(models.Model):
     id = models.AutoField(primary_key=True)
     label = models.CharField(max_length=255)
 
     def __str__(self):
-        return ' '
+        return str(self.id)
+
+class Order(models.Model):
+    id = models.AutoField(primary_key=True)
+    address = models.CharField(max_length=1000)
+    client = models.ForeignKey(Client,null=True,blank=True,on_delete=models.CASCADE)
+    order_status = models.ForeignKey(OrderStatus,null=True,blank=True,on_delete=models.CASCADE)
+    comment = models.CharField(null=True,blank=True,max_length=1000)
+
+    def __str__(self):
+        return self.address
 
 class Size(models.Model):
     id = models.AutoField(primary_key=True)
@@ -73,10 +88,10 @@ class ImageGroup(models.Model):
     quantity = models.IntegerField()
     size = models.ForeignKey(Size,on_delete=models.CASCADE)
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    order_status = models.ForeignKey(OrderStatus,on_delete=models.CASCADE)
-    comment = models.CharField(max_length=1000)
     delivery = models.BooleanField()
     images = models.ManyToManyField(Image)
 
-    def __str__(self):
-        return self.comment
+
+    def image_tag(self):
+        # used in the admin site model as a "thumbnail"
+        return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
