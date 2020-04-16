@@ -46,22 +46,13 @@ class ImageGroupAdmin(admin.TabularInline):
     inlines = [ImageAdmin,]
     extra = 0
 
-    # def get_queryset(self,arg):
-    #     # Return a list of albums containing a highlight even if none is selected
-    #     album_list=[]
-    #     for album in super(ImageGroupAdmin, self).get_queryset():
-    #         # if there is no highlight but there are images in the album, use the first
-    #         if not album.highlight and album.images.count():
-    #             first_image = album.images.earliest('id')
-    #             album.highlight = first_image
-    #         album_list.append(album)
-    #     return album_list
+
 
 class OrderAdmin(admin.ModelAdmin):
     model = Order
 
     inlines = [ ImageGroupAdmin]
-    readonly_fields = ('task_added_at','client')
+    readonly_fields = ('client_phone','client','address','benefit','city')
     
     change_form_template = 'admin/custom/change_form.html'
 
@@ -72,8 +63,14 @@ class OrderAdmin(admin.ModelAdmin):
             )
         }
 
-    def task_added_at(self, obj):
+    def client_phone(self, obj):
         return obj.client.phone_number
+    
+    def benefit(self, obj):
+        return obj.address.benefit
+    
+    def city(self, obj):
+        return obj.address.city.name
 
 
 

@@ -92,9 +92,5 @@ class ImageGroup(models.Model):
     delivery = models.BooleanField()
     images = models.ManyToManyField(Image)
 
-    def __str__(self):
-        return str(self.id)
-
-    def image_tag(self):
-        # used in the admin site model as a "thumbnail"
-        return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
+    def screenshots_as_list(self):
+        return self.images.split('\n')

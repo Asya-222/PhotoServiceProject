@@ -125,3 +125,4 @@ class ImageGroupViewSet(viewsets.ModelViewSet):
 
     queryset = ImageGroup.objects.all()
     serializer_class = ImageGroupSerializer
+
