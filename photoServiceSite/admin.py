@@ -43,6 +43,7 @@ class ImageGroupAdmin(admin.TabularInline):
     fields = ['images','size','order']
     readonly_fields = ['images','size','order']
 
+
     def images(self, instance):
         return instance.images
     images.short_description = 'image'
@@ -53,8 +54,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class ImageGroupAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/imgs/imgs_change_list.html'
 
-    inlines = [ ImageAdmin]
 
 class MyEmsAdminSite(AdminSite):
 
@@ -101,5 +102,5 @@ myems_admin_site.register(Addresses)
 myems_admin_site.register(Image,ImageAdmin)
 myems_admin_site.register(Order,OrderAdmin)
 myems_admin_site.register(OrderStatus)
-myems_admin_site.register(ImageGroup)
+myems_admin_site.register(ImageGroup,ImageGroupAdmin)
 
