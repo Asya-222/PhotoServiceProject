@@ -38,14 +38,14 @@ class Addresses(models.Model):
     city = models.ForeignKey(City,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.address
+        return str(self.address)
 
 class Image(models.Model):
     id = models.AutoField(primary_key=True)
     path = models.ImageField()
 
     def __str__(self):
-        return self.path.url
+        return str(self.path.url)
 
 
     def url(self):
@@ -57,22 +57,23 @@ class Image(models.Model):
     def image_tag(self):
         # used in the admin site model as a "thumbnail"
         return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
+
 class OrderStatus(models.Model):
     id = models.AutoField(primary_key=True)
     label = models.CharField(max_length=255)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.label)
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
-    address = models.CharField(max_length=1000)
+    address = models.ForeignKey(Addresses,null=True,blank=True,on_delete=models.CASCADE)
     client = models.ForeignKey(Client,null=True,blank=True,on_delete=models.CASCADE)
     order_status = models.ForeignKey(OrderStatus,null=True,blank=True,on_delete=models.CASCADE)
     comment = models.CharField(null=True,blank=True,max_length=1000)
 
     def __str__(self):
-        return self.address
+        return str(self.id)
 
 class Size(models.Model):
     id = models.AutoField(primary_key=True)
@@ -91,6 +92,8 @@ class ImageGroup(models.Model):
     delivery = models.BooleanField()
     images = models.ManyToManyField(Image)
 
+    def __str__(self):
+        return str(self.id)
 
     def image_tag(self):
         # used in the admin site model as a "thumbnail"

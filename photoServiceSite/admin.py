@@ -3,7 +3,8 @@ from django.contrib.admin import AdminSite
 from django.utils.translation import ungettext_lazy
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
-
+from django.utils.safestring import mark_safe
+from django.contrib.contenttypes.admin import GenericTabularInline
 from django.forms import ModelForm, PasswordInput
 from django.contrib import admin
 
@@ -40,17 +41,40 @@ class OrderStatusAdmin(admin.TabularInline):
 
 class ImageGroupAdmin(admin.TabularInline):
     model = ImageGroup
-    fields = ['images','size','order']
-    readonly_fields = ['images','size','order']
+    list_display = ['images','size','order','quantity']
+    readonly_fields = ['images','size','order','quantity']
+    inlines = [ImageAdmin,]
+    extra = 0
 
-
-    def images(self, instance):
-        return instance.images
-    images.short_description = 'image'
+    # def get_queryset(self,arg):
+    #     # Return a list of albums containing a highlight even if none is selected
+    #     album_list=[]
+    #     for album in super(ImageGroupAdmin, self).get_queryset():
+    #         # if there is no highlight but there are images in the album, use the first
+    #         if not album.highlight and album.images.count():
+    #             first_image = album.images.earliest('id')
+    #             album.highlight = first_image
+    #         album_list.append(album)
+    #     return album_list
 
 class OrderAdmin(admin.ModelAdmin):
+    model = Order
 
     inlines = [ ImageGroupAdmin]
+    readonly_fields = ('task_added_at','client')
+    
+    change_form_template = 'admin/custom/change_form.html'
+
+    class Media:
+        css = {
+            'all': (
+                'css/admin.css',
+            )
+        }
+
+    def task_added_at(self, obj):
+        return obj.client.phone_number
+
 
 
 class ImageGroupAdmin(admin.ModelAdmin):
