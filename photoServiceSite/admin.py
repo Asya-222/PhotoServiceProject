@@ -16,7 +16,8 @@ from client.models import (
      Image,
      Order,
      OrderStatus,
-     ImageGroup
+     ImageGroup,
+     CrudOrder
 
 )
 
@@ -25,6 +26,8 @@ def image_tag(self):
     return u'<img src="%s" />'
 image_tag.short_description = 'Image'
 image_tag.allow_tags = True
+
+
 
 
 class ClientAdmin(admin.TabularInline):
@@ -48,15 +51,25 @@ class ImageGroupAdmin(admin.TabularInline):
 
 
 
+class ImageGroupCrudAdmin(admin.TabularInline):
+    model = ImageGroup
+    list_display = ['images','size','order','quantity']
+    inlines = [ImageAdmin,]
+    extra = 0
+
+
 class OrderAdmin(admin.ModelAdmin):
-    model = Order
 
     inlines = [ ImageGroupAdmin]
+
     readonly_fields = ('client_phone','client','address','benefit','city')
     
     change_form_template = 'admin/custom/change_form.html'
-
+    list_display = ('id','client','order_status','client_phone','client','address','benefit','city')
+    def has_add_permission(self, request, obj=None):
+        return False
     class Media:
+
         css = {
             'all': (
                 'css/admin.css',
@@ -74,8 +87,18 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 
+class CrudOrderAdmin(admin.ModelAdmin):
+
+    model = CrudOrder
+    inlines = [ ImageGroupCrudAdmin]
+
+    
+    list_display = ('id','client','order_status','client','address')
+
+
+
 class ImageGroupAdmin(admin.ModelAdmin):
-    change_list_template = 'admin/imgs/imgs_change_list.html'
+    model = ImageGroup
 
 
 class MyEmsAdminSite(AdminSite):
@@ -85,6 +108,7 @@ class MyEmsAdminSite(AdminSite):
     site_header = 'Annaniks LLC'
     #
     index_title = 'Annaniks LLC'
+
 class UserForm(ModelForm):
     print('hop')
 
@@ -122,6 +146,8 @@ myems_admin_site.register(City)
 myems_admin_site.register(Addresses)
 myems_admin_site.register(Image,ImageAdmin)
 myems_admin_site.register(Order,OrderAdmin)
+myems_admin_site.register(CrudOrder,CrudOrderAdmin)
+
 myems_admin_site.register(OrderStatus)
 myems_admin_site.register(ImageGroup,ImageGroupAdmin)
 

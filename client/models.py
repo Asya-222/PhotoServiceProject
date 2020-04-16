@@ -71,7 +71,10 @@ class Order(models.Model):
     client = models.ForeignKey(Client,null=True,blank=True,on_delete=models.CASCADE)
     order_status = models.ForeignKey(OrderStatus,null=True,blank=True,on_delete=models.CASCADE)
     comment = models.CharField(null=True,blank=True,max_length=1000)
-
+    class Meta:
+        permissions = (
+            ('read_item','Can read item'),
+        )
     def __str__(self):
         return str(self.id)
 
@@ -94,3 +97,12 @@ class ImageGroup(models.Model):
 
     def screenshots_as_list(self):
         return self.images.split('\n')
+
+class CrudOrder(Order):
+
+    class Meta:
+        verbose_name = "զակազ թեստ"
+        
+        # nullslast = True
+
+        proxy=True
