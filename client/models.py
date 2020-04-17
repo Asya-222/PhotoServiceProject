@@ -68,8 +68,9 @@ class OrderStatus(models.Model):
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
     address = models.ForeignKey(Addresses,null=True,blank=True,on_delete=models.CASCADE)
-    client = models.ForeignKey(Client,null=True,blank=True,on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.CASCADE)
     order_status = models.ForeignKey(OrderStatus,null=True,blank=True,on_delete=models.CASCADE)
+    delivery = models.BooleanField(null=True,blank=True)
     comment = models.CharField(null=True,blank=True,max_length=1000)
     class Meta:
         permissions = (
@@ -92,7 +93,6 @@ class ImageGroup(models.Model):
     quantity = models.IntegerField()
     size = models.ForeignKey(Size,on_delete=models.CASCADE)
     order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    delivery = models.BooleanField()
     images = models.ManyToManyField(Image)
 
     def screenshots_as_list(self):

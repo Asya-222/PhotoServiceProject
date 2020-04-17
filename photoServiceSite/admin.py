@@ -61,7 +61,6 @@ class ImageGroupCrudAdmin(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
 
     inlines = [ ImageGroupAdmin]
-
     readonly_fields = ('client_phone','client','address','benefit','city')
     change_form_template = 'admin/custom/change_form.html'
     list_display = ('id','client','order_status','client_phone','client','address','benefit','city')
@@ -145,7 +144,6 @@ myems_admin_site.register(Addresses)
 myems_admin_site.register(Image,ImageAdmin)
 myems_admin_site.register(Order,OrderAdmin)
 myems_admin_site.register(CrudOrder,CrudOrderAdmin)
-
 myems_admin_site.register(OrderStatus)
 myems_admin_site.register(ImageGroup,ImageGroupAdmin)
 
