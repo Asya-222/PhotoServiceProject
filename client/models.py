@@ -19,7 +19,27 @@ class Client(models.Model):
     target_wight = models.IntegerField(null=True)
 
     def __str__(self):
-        return self.user.first_name + ' ' + self.user.last_name
+        return self.user.first_name
+
+    
+    def get_fields(self):
+        return dict({
+            'id' : self.id,
+            "first_name":self.user.first_name,
+            'last_name' : self.user.last_name,
+            'email' : self.user.email
+            # 'facebook_id' : self.facebook_id,
+            # 'instagram_id' : self.instagram_id,
+            # 'vk_id' : self.vk_id,
+            # 'device_token' : self.device_token,
+            # 'device_os' : self.device_os,
+            # 'crated_at' : self.crated_at,
+            # 'country_code' : self.country_code,
+            # 'cover_letter' : self.cover_letter,
+            # # 'metric' = models.ForeignKey(Metric,models.CASCADE)
+            # # 'ui_language' = models.ForeignKey(Language,models.CASCADE)
+            # 'stripe_account' : self.stripe_account,
+        })
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
@@ -92,7 +112,7 @@ class ImageGroup(models.Model):
     id = models.AutoField(primary_key=True)
     quantity = models.IntegerField()
     size = models.ForeignKey(Size,on_delete=models.CASCADE)
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='group_image',null=True,blank=True)
     images = models.ManyToManyField(Image)
 
     def screenshots_as_list(self):

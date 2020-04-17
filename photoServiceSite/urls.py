@@ -21,6 +21,10 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
 from .admin import  myems_admin_site
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from client.views import (
     ClientViewSet,
@@ -30,7 +34,10 @@ from client.views import (
     ImageViewSet,
     OrderViewSet,
     OrderStatusViewSet,
-    ImageGroupViewSet
+    ImageGroupViewSet,
+    login,
+    getMe,
+    create_order
     )
 router = routers.DefaultRouter()
 router.register(r'client', ClientViewSet)
@@ -44,5 +51,11 @@ router.register(r'imagegroup', ImageGroupViewSet)
 urlpatterns = [
     path('', myems_admin_site.urls),
     path('api/', include(router.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/client-login/',login),
+    path('api/client-get/me/',getMe),
+    path('api/client-create/order/',create_order)
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
