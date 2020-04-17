@@ -63,13 +63,11 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [ ImageGroupAdmin]
 
     readonly_fields = ('client_phone','client','address','benefit','city')
-    
     change_form_template = 'admin/custom/change_form.html'
     list_display = ('id','client','order_status','client_phone','client','address','benefit','city')
     def has_add_permission(self, request, obj=None):
         return False
     class Media:
-
         css = {
             'all': (
                 'css/admin.css',
