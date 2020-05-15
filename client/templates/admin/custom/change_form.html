@@ -48,8 +48,8 @@
                                 {% if field.field.name == 'images' %}
                                     {% with field.contents|split:',' as screens %}
                                         {% for screen in screens %}
-                                            <a href={{screen}}  target="blank">
-                                                <img src={{screen}} alt="Smiley face" height="150" width="150">  
+                                            <a href='data:image/png;base64,{{screen}}'  target="blank">
+                                                <img src='data:image/png;base64,{{screen}}' alt="Smiley face" height="150" width="150">  
                                             </a>   
                                         {% endfor %}
 

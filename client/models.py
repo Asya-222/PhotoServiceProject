@@ -67,16 +67,18 @@ class Image(models.Model):
     def __str__(self):
         return str(self.id)
 
-#
-#    def url(self):
-#        # returns a URL for either internal stored or external image url
-#
-#            # is this the best way to do this??
-#            return os.path.join('/', settings.MEDIA_URL, os.path.basename(str(self.path)))
-#
-#    def image_tag(self):
-#        # used in the admin site model as a "thumbnail"
-#        return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
+    def get_path(self):
+        return self.path
+
+    def url(self):
+       # returns a URL for either internal stored or external image url
+
+           # is this the best way to do this??
+           return  "data:image/png;base64,"+self.path#os.path.join('/', settings.MEDIA_URL, os.path.basename(str(self.path)))
+
+    def image_tag(self):
+       # used in the admin site model as a "thumbnail"
+       return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
 
 class OrderStatus(models.Model):
     id = models.AutoField(primary_key=True)

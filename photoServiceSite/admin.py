@@ -35,7 +35,9 @@ class ClientAdmin(admin.TabularInline):
 
 class ImageAdmin(admin.ModelAdmin):
     model = Image
-    fields = ('image_tag', 'path')
+    list_display = ['id',]
+
+    fields = ('image_tag',)
     readonly_fields = ('image_tag',)
 
 class OrderStatusAdmin(admin.TabularInline):
