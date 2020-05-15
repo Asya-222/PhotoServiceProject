@@ -91,6 +91,7 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     address = models.ForeignKey(Addresses,null=True,blank=True,on_delete=models.CASCADE)
     client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.CASCADE)
+    amount = models.FloatField(null=True,blank=True) 
     order_status = models.ForeignKey(OrderStatus,null=True,blank=True,on_delete=models.CASCADE,related_name="status")
     delivery = models.BooleanField(null=True,blank=True)
     comment = models.CharField(null=True,blank=True,max_length=1000)
