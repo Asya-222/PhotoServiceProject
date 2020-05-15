@@ -105,10 +105,10 @@ class SizeSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 class ImageGroupSerializer(serializers.HyperlinkedModelSerializer):
-    size = SizeSerializer(read_only=True)
+    size_image_group = SizeSerializer(source='size',read_only=True)
     class Meta:
         model = ImageGroup
-        fields = ('quantity','size','order','images')
+        fields = ('quantity','size','order','images','size_image_group')
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     

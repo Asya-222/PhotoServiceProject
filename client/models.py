@@ -70,7 +70,7 @@ class Image(models.Model):
     def get_path(self):
         return self.path
 
-    def url(self):
+    def urls(self):
        # returns a URL for either internal stored or external image url
 
            # is this the best way to do this??
@@ -78,7 +78,7 @@ class Image(models.Model):
 
     def image_tag(self):
        # used in the admin site model as a "thumbnail"
-       return mark_safe('<img src="{}" width="150" height="150" />'.format(self.url()))
+       return mark_safe('<img src="{}" width="150" height="150" />'.format(self.urls()))
 
 class OrderStatus(models.Model):
     id = models.AutoField(primary_key=True)
@@ -113,7 +113,7 @@ class Size(models.Model):
 class ImageGroup(models.Model):
     id = models.AutoField(primary_key=True)
     quantity = models.IntegerField()
-    size = models.ForeignKey(Size,on_delete=models.CASCADE)
+    size = models.ForeignKey(Size,on_delete=models.CASCADE,null=True,blank=True,related_name="size_image_group")
     order = models.ForeignKey(Order,on_delete=models.CASCADE,related_name='group_image',null=True,blank=True)
     images = models.ManyToManyField(Image)
 
