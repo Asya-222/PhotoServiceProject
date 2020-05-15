@@ -68,6 +68,11 @@ class OrderFilter(django_filters.FilterSet):
         model = Order
         fields = ["client"]
 
+class AddressesFilter(django_filters.FilterSet):
+    class Meta:
+        model = Addresses
+        fields = ["client"]
+
 
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
@@ -112,6 +117,9 @@ class AddressesViewSet(viewsets.ModelViewSet):
 
     queryset = Addresses.objects.all()
     serializer_class = AddressesSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = AddressesFilter
+
 
 
 class ImageViewSet(viewsets.ModelViewSet):
