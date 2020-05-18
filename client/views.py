@@ -138,7 +138,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     """
     # permission_classes = (WreadOnly,ReadOnly)
 
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('-id')
     serializer_class = OrderSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = OrderFilter
@@ -211,7 +211,6 @@ def create_order(request):
 
     order = request.data.get('order')
     group_image = request.data.get('group_image')
- 
     order_serilizer = OrderSerializer(
         data=dict(order), context=serializer_context)
     if order_serilizer.is_valid():

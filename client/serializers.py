@@ -114,9 +114,10 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     
     group_image = ImageGroupSerializer(many=True,read_only=True)
     status = OrderStatusSerializer(source='order_status',read_only=True)
+    order_address = AddressesSerializer(source='address',read_only=True)
 
     class Meta:
         model = Order
-        fields = ('url','address','id','amount','client','order_status','status','delivery','comment','group_image',)
+        fields = ('url','address','id','amount','client','order_status','status','delivery','comment','group_image','order_address')
 
 
