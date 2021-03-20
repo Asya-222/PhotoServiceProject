@@ -53,7 +53,7 @@ incremental==16.10.1
 itypes==1.1.0
 jdcal==1.4.1
 jet==1.0
-Jinja2==2.10
+Jinja2==2.11.3
 josepy==1.1.0
 jsonfield==2.0.2
 jsonpatch==1.16
