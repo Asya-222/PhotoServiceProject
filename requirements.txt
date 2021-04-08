@@ -21,7 +21,7 @@ cryptography==2.1.4
 defusedxml==0.6.0
 diff-match-patch==20181111
 # distro-info==0.18ubuntu0.18.04.1
-Django==2.2.2
+Django==2.2.20
 django-braces==1.14.0
 django-ckeditor==5.7.1
 django-colorfield==0.2.1
